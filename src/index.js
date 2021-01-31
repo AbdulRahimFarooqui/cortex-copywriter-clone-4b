@@ -3,10 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { TransProvider } from "./DisplayOfTechniques/context.js"
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <TransProvider>
+      <App />
+    </TransProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

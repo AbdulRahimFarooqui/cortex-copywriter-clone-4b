@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import useWebAnimations, { tada } from "@wellyshen/use-web-animations";
 import './App.css';
 import featuredImage from './images/Intro_Featured_Image_Empty.svg';
@@ -15,7 +15,6 @@ function App() {
 
   const { ref: tadaRef, getAnimation: tadaAnim } = useWebAnimations({ ...tada })
   const { topicDetails, find } = useContext(techContext);
-  let [tDetailsTopic, setIt] = useState(topicDetails.t);
   useEffect(() => {
     const startAnimation = () => {
       tadaAnim().play()
@@ -27,6 +26,13 @@ function App() {
       startAnimation();
     })
   }, [tadaAnim])
+  //aik object jis main {topic:"",sentence:""} structure ho.
+  //aik context banao jis main yeh ^ object initial wala stored ho
+  //aik reducer jis main aik list ho case: topic1 phir case: topic2 ...
+  //yahan App() main sirf call karna hai reducer ko context k zariye
+
+  // aik buuton ka div banao aur uss ko iterate karo Object.values say tamam
+  // avatars par.
   const para_4_points = ["Headlines & Taglines", "Content Strategy", "Blogs & Articles",
     "Social Media Content", "Video Scripts",
     "eDMs & Newsletters", "Case Studies", "Whitepapers"]
@@ -36,8 +42,8 @@ function App() {
     "Design Principles", "Prototype"];
 
   const para_3_points = ["Information Architecture", "Wireframes", "Competitor Analysis",
-    "On-page SEO", "Off-page SEO", "USP/UVP", "Landing Page", "Sales Letter"];
-
+    "On-page SEO", "Off-page SEO", "USP/UVP", "Landing Page", "Sales Letter"]
+  //
   const { brainRef } = useWebAnimations({
     keyframes: [{ transform: "translateY(-50px)", easing: 'ease-in-out' },
     { transform: "translateY(7px)", easing: 'ease-in-out' },
@@ -49,35 +55,29 @@ function App() {
     },
   });
 
+  //remove un-used classNames of divs and others
+  //
   return (
     <div>
       <div className="type-writer" >
         <TypeWriter
-          onInit={(typeWriter) => {
-            typeWriter
-              .changeDelay(100)
-              .typeString('Welcome to the CORTEX COPYWRITER')
-              .pauseFor(1500)
-              .changeDeleteSpeed(0.1)
-              .deleteAll()
-              .changeDelay(100)
-              .typeString('We make copies that boost your business!')
-              .pauseFor(2000)
-              .changeDelay(100)
-              .deleteChars(20)
-              .typeString('help your business become memorable.')
-              .pauseFor(2000)
-              .changeDelay(100)
-              .deleteChars(17)
-              .typeString('be more lovable!')
-              .pauseFor(2000)
-              .changeDelay(100)
-              .start()
-          }}
-          options={{ loop: true }}
+        onInit={(typeWriter)=>{
+          typeWriter
+          .typeString('Ayesha is a Little Princess')
+          .pauseFor(1500)
+          .typeString(' aka أميرة صغيرة ')
+          .pauseFor(2000)
+          .deleteChars(13)
+          .changeDeleteSpeed(10)
+          .typeString('Great!')
+          .pauseFor(1000)
+          .start()
+        }}
+        options={{loop:true}}
         />
       </div>
       <div className="Intro-Things">
+        {/* make this div overlap with images! */}
         <div className="intro-text">
           <div className="headings">
             <p className="first-heading"><b>CORTEX</b></p>
@@ -108,7 +108,7 @@ function App() {
         </div>
       </div>
       <div className="third-div">
-        <img height={620} src={service_7} alt="service 7" className="service-7" />
+        <img height={650} src={service_7} alt="service 7" className="service-7" />
         <div className="div-3-text">
           <p className="heading-3">Website Copywriting</p>
           <p className="para-3">Your website is a dialogue with your audience. I capture the essence of<br />your business and communicate it clearly. Carefully considered writing<br />and SEO best practices allow me to craft the perfect user journey<br />online. Let me draw the map that guides users every step of the way<br />from discovery, to consideration, to conversion.</p>
@@ -174,30 +174,13 @@ function App() {
         <div className="typing-screen">
           TECHNIQUE SAMPLE<p><b>AUGMENTED REALITY (AR)<br />GLASSES:</b></p>
         </div>
-
         <div className="list-topics">
           {listTopics.map((val, key) => {
             return (
               <ul className="topics">
                 <li
-                  className={(tDetailsTopic.t === val) ? "highlighted" : ""}
-                  onClick={() => {
-                    find(val);
-                    setIt(val);
-                    console.log(topicDetails.sent, 'topicDetails.sent displayed');
-                    console.log(tDetailsTopic, 'tDetailsTpoic displayed');
-                    return (
-                      <div>
-                        <TypeWriter
-                          onInit={(typeWriter) => {
-                            typeWriter
-                              .typeString(topicDetails.sent)
-                              .start()
-                          }}
-                        />
-                      </div>
-                    )
-                  }}
+                  className={(topicDetails.t === val) ? "highlighted" : ""}
+                  onClick={() => { find(val) }}
                   id="highlighted"
                 >
                   <p className="topic">{val}</p>
